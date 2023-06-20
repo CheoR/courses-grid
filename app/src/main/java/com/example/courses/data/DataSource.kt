@@ -1,7 +1,7 @@
 package com.example.courses.data
 
 import com.example.courses.R
-
+import com.example.courses.model.Topic
 object DataSource {
     val topics = listOf(
         Topic(R.string.architecture, 58, R.drawable.architecture),
