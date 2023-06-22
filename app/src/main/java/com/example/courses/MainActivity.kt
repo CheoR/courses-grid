@@ -6,13 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
@@ -64,22 +67,25 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .background(Color.LightGray),
         ){
-            Image(
-                painter = painterResource(topic.imageResourceId),
-                contentDescription = stringResource(topic.stringResourceId),
-                modifier = Modifier
-                    .height(68.dp),
-                contentScale = ContentScale.Crop
-            )
+            Box {
+                Image(
+                    painter = painterResource(topic.imageResourceId),
+                    contentDescription = stringResource(id = topic.stringResourceId),
+                    modifier = Modifier
+                        .height(68.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
             Column(
                 modifier = Modifier
-//                    .background(Color.Green)
                     .padding(start=16.dp, end=16.dp,top=16.dp, ),
             ){
                 Text(
 //                text = LocalContext.current.getString(affirmation.stringResourceId),
-                    text = stringResource(topic.stringResourceId),
+                    text = stringResource(id = topic.stringResourceId),
                     modifier = Modifier,
+//                        .width(100.dp),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -115,32 +121,19 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
 @Composable
 fun TopicApp() {
     val topics = DataSource.topics // .loadTopics()
-//    TopicCard(topic = topics[0])
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2)
-    ) {
-//        if(topics != null){
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+        if(topics != null){
             items(DataSource.topics){ topic ->
                 TopicCard(topic)
             }
-//        }
-
+        }
     }
 }
-
-//@Composable
-//fun TopicGrid(modifier: Modifier = Modifier) {
-//    LazyVerticalGrid(
-//        columns = GridCells.Fixed(2),
-//        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-//        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-//        modifier = modifier
-//    ) {
-//        items(DataSource.topics) { topic ->
-//            TopicCard(topic)
-//        }
-//    }
-//}
 
 @Preview(showBackground = true)
 @Composable
