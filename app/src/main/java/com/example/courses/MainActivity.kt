@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,6 +32,9 @@ import androidx.compose.ui.unit.dp
 import com.example.courses.data.DataSource
 import com.example.courses.model.Topic
 import com.example.courses.ui.theme.CoursesTheme
+//import androidx.compose.foundation.lazy.items
+//import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.items
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +57,7 @@ class MainActivity : ComponentActivity() {
 fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
     Card(modifier = modifier,
     ) {
-        val painter = painterResource(R.drawable.photography)
         val grain = painterResource(R.drawable.ic_grain)
-        val contentDescription = stringResource(R.string.photography)
         // aspectRatio
         // https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/package-summary#(androidx.compose.ui.Modifier).aspectRatio(kotlin.Float,kotlin.Boolean)
         Row(
@@ -62,8 +65,8 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
                 .background(Color.LightGray),
         ){
             Image(
-                painter = painter,
-                contentDescription = contentDescription,
+                painter = painterResource(topic.imageResourceId),
+                contentDescription = stringResource(topic.stringResourceId),
                 modifier = Modifier
                     .height(68.dp),
                 contentScale = ContentScale.Crop
@@ -75,7 +78,7 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
             ){
                 Text(
 //                text = LocalContext.current.getString(affirmation.stringResourceId),
-                    text = stringResource(R.string.photography),
+                    text = stringResource(topic.stringResourceId),
                     modifier = Modifier,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -93,14 +96,14 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
                 ) {
                    Image(
                         painter = grain,
-                        contentDescription = contentDescription,
+                        contentDescription = "grain img",
                         modifier = Modifier
                             .height(24.dp),
                         contentScale = ContentScale.Crop,
                     )
                     Text(
-//                      text = LocalContext.current.getString(affirmation.stringResourceId),
-                        text = "321",
+                        text = topic.availableCourses.toString(),
+//                        text = "test",
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
@@ -111,9 +114,33 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
 
 @Composable
 fun TopicApp() {
-    val topics = DataSource.loadTopics()
-    TopicCard(topic = topics[0])
+    val topics = DataSource.topics // .loadTopics()
+//    TopicCard(topic = topics[0])
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2)
+    ) {
+//        if(topics != null){
+            items(DataSource.topics){ topic ->
+                TopicCard(topic)
+            }
+//        }
+
+    }
 }
+
+//@Composable
+//fun TopicGrid(modifier: Modifier = Modifier) {
+//    LazyVerticalGrid(
+//        columns = GridCells.Fixed(2),
+//        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+//        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+//        modifier = modifier
+//    ) {
+//        items(DataSource.topics) { topic ->
+//            TopicCard(topic)
+//        }
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
