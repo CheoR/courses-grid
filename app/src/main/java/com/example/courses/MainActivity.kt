@@ -65,6 +65,7 @@ fun TopicCard (topic: Topic, modifier: Modifier = Modifier) {
         // https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/package-summary#(androidx.compose.ui.Modifier).aspectRatio(kotlin.Float,kotlin.Boolean)
         Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .background(Color.LightGray),
         ){
             Box {
